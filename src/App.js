@@ -7,6 +7,7 @@ import "./styles.css";
 export default function App() {
   const [todo, setTodo] = useState([]);
   const [done, setDone] = useState([]);
+  const [disabled, setDisabled] = useState(false);
 
   // let todohaya = {
   //   text: "",
@@ -14,6 +15,7 @@ export default function App() {
   //   finished: false,
   //   showEdit: false
   // };
+
   const todohaya = useRef({
     text: "",
     id: 0,
@@ -37,15 +39,11 @@ export default function App() {
       todohaya.current.id = todo.length;
       todos.push({ ...todohaya.current });
       todohaya.current.text = "";
-
+      e.target[0].value = "";
       setTodo(todos);
     }
     //setUniqueID(uniqueID+1);
-    e.preventDefault();
-  };
 
-  const handleBlur = e => {
-    e.target.value = "";
     e.preventDefault();
   };
 
@@ -55,7 +53,7 @@ export default function App() {
     const todoIndex = todos.findIndex(t => t.id === id);
     const todoItem = todos[todoIndex];
     todoItem.showEdit = !todos[todoIndex].showEdit;
-
+    setDisabled(!disabled);
     setTodo([...todos]);
     e.preventDefault();
 
@@ -76,7 +74,9 @@ export default function App() {
     const todoIndex = todos.findIndex(t => t.id === id);
 
     todos.splice(todoIndex, 1);
-    todos.filter(t => t.id > 0).map(t => (t.id = t.id - 1));
+    if (id !== todos.length) {
+      todos.filter(t => t.id > 0).map(t => (t.id = t.id - 1));
+    }
 
     setTodo([...todos]);
     e.preventDefault();
@@ -107,7 +107,7 @@ export default function App() {
       <h1>ToDo List</h1>
       <Separator />
       <form onSubmit={handleSubmit}>
-        <input type="text" onChange={handleChange} onBlur={handleBlur} />
+        <input type="text" onChange={handleChange} disabled={disabled} />
         <input type="submit" value="Add Item" />
       </form>
 

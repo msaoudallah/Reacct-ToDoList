@@ -1,4 +1,9 @@
 .App {
-  font-family: sans-serif;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   text-align: center;
+  color: salmon;
+}
+
+.App input {
+  margin-right: 15px;
 }
